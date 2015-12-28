@@ -11,14 +11,15 @@
     "output"
   ],
   "dependencies": {
-    "purescript-prelude": "^0.1"
+    "purescript-prelude": "^0.1",
+    "purescript-transformers": "^0.8.0"
   },
   "devDependencies": {
     "purescript-super-spec": "^0.8",
     "purescript-console": "^0.1"
   },
   "repository": {
-	  "type": "git",
-	  "url": "git://github.com/cdepillabout/purescript-monad-supply"
+    "type": "git",
+    "url": "git://github.com/cdepillabout/purescript-monad-supply"
   }
 }
