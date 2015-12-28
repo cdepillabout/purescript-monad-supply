@@ -1,0 +1,24 @@
+{
+  "name": "purescript-monad-supply",
+  "version": "0.0.1",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-prelude": "^0.1"
+  },
+  "devDependencies": {
+    "purescript-super-spec": "^0.8",
+    "purescript-console": "^0.1"
+  },
+  "repository": {
+	  "type": "git",
+	  "url": "git://github.com/cdepillabout/purescript-monad-supply"
+  }
+}
