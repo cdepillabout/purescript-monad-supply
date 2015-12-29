@@ -1,9 +1,9 @@
 
 module Control.Monad.Supply.Class where
 
-import Prelude
+import Prelude (class Monad, bind, show, (<>), pure, ($))
 
-import Control.Monad.State.Trans
+import Control.Monad.State.Trans (StateT, lift)
 
 class (Monad m) <= MonadSupply m where
   fresh :: m Int

@@ -2,14 +2,17 @@
 module Control.Monad.Supply.Trans where
 
 import Prelude
+    ( class Functor, class Monad, class Bind, class Applicative, class Apply
+    , bind, map, (<<<), flip, return, (+), ($), pure, apply
+    )
 
-import Control.Monad.Error.Class
-import Control.Monad.Reader.Class
-import Control.Monad.State.Trans
-import Control.Monad.Writer.Class
-import Data.Tuple
+import Control.Monad.Error.Class (class MonadError, throwError, catchError)
+import Control.Monad.Reader.Class (class MonadReader, local, ask)
+import Control.Monad.State.Trans (class MonadTrans, StateT, runStateT, put, get, lift)
+import Control.Monad.Writer.Class (class MonadWriter, writer, listen, pass)
+import Data.Tuple (Tuple, fst)
 
-import Control.Monad.Supply.Class
+import Control.Monad.Supply.Class (class MonadSupply)
 
 newtype SupplyT m a = SupplyT (StateT Int m a)
 

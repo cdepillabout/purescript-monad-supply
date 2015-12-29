@@ -5,12 +5,12 @@ module Control.Monad.Supply
     , module Control.Monad.Supply.Trans
     ) where
 
-import Prelude
+import Prelude ((<<<), bind)
 
-import Data.Identity
-import Data.Tuple
+import Data.Identity (Identity, runIdentity)
+import Data.Tuple (Tuple)
 
-import Control.Monad.Supply.Class (MonadSupply, fresh)
+import Control.Monad.Supply.Class (class MonadSupply, fresh)
 import Control.Monad.Supply.Trans (SupplyT(..), evalSupplyT, runSupplyT)
 
 type Supply = SupplyT Identity
