@@ -13,7 +13,6 @@ import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Eff.Random (RANDOM)
-import Control.Monad.Eff.Ref (REF, readRef, writeRef, newRef)
 import Control.Monad.Writer.Class (listen, tell, writer)
 import Data.Foldable (sequence_)
 import Data.Monoid (mempty)
@@ -25,9 +24,15 @@ import Test.Spec.Runner (Process, run)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter.Console (consoleReporter)
 
-import Control.Monad.Supply (Supply(..))
+import Control.Monad.Supply (Supply, evalSupply, fresh)
 
-main :: forall eff . Eff (process :: Process, console :: CONSOLE, random :: RANDOM, err :: EXCEPTION, ref :: REF | eff) Unit
-main = run [consoleReporter] do
-    describe "Control.Monad.Logger" do
-        it "needs some tests" $ pure unit
+main :: forall eff . Eff (process :: Process, console :: CONSOLE, random :: RANDOM, err :: EXCEPTION| eff) Unit
+main = run [consoleReporter] $
+    describe "Control.Monad.Logger" $
+        it "fresh works" $ do
+            let res = evalSupply 0 $ do
+                        a <- fresh
+                        b <- fresh
+                        pure $ Tuple a b
+            res `shouldEqual` Tuple 0 1
+

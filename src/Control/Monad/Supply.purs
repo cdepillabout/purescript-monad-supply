@@ -1,11 +1,17 @@
 
-module Control.Monad.Supply where
+module Control.Monad.Supply
+    ( module Control.Monad.Supply
+    , module Control.Monad.Supply.Class
+    , module Control.Monad.Supply.Trans
+    ) where
 
 import Prelude
 
-import Control.Monad.Supply.Trans
 import Data.Identity
 import Data.Tuple
+
+import Control.Monad.Supply.Class (MonadSupply, fresh)
+import Control.Monad.Supply.Trans (SupplyT(..), evalSupplyT, runSupplyT)
 
 type Supply = SupplyT Identity
 
