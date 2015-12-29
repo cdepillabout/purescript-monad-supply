@@ -3,15 +3,18 @@ module Control.Monad.Supply.Trans where
 
 import Prelude
 
+import Control.Monad.Error.Class
+import Control.Monad.Reader.Class
 import Control.Monad.State.Trans
-import Control.Monad.Supply.Class
+import Control.Monad.Writer.Class
 import Data.Tuple
+
+import Control.Monad.Supply.Class
 
 newtype SupplyT m a = SupplyT (StateT Int m a)
 
 unSupplyT :: forall m a . SupplyT m a -> StateT Int m a
 unSupplyT (SupplyT stateT) = stateT
--- deriving (Functor, Applicative, Monad, MonadTrans, MonadError e, MonadWriter w, MonadReader r)
 
 instance functorSupplyT :: (Monad m) => Functor (SupplyT m) where
     map f (SupplyT stateT) = SupplyT $ map f stateT
@@ -27,14 +30,29 @@ instance bindSupplyT :: (Monad m) => Bind (SupplyT m) where
         a <- stateT
         unSupplyT $ f a
 
--- instance monadSupplySupplyT :: (Monad m) => MonadSupply (SupplyT m) where
---   fresh = SupplyT $ do
---     n <- get
---     put (n + 1)
---     return n
+instance monadSupplyT :: (Monad m) => Monad (SupplyT m)
 
--- instance (MonadSupply m) => MonadSupply (StateT s m) where
---   fresh = lift fresh
+instance monadTransSupplyT :: MonadTrans (SupplyT) where
+    lift = SupplyT <<< lift
+
+instance monadErrorSupplyT :: (MonadError e m) => MonadError e (SupplyT m) where
+    catchError (SupplyT stateT) errorHandler = SupplyT $ catchError stateT (\e -> unSupplyT $ errorHandler e)
+    throwError e = SupplyT <<< lift $ throwError e
+
+instance monadWriterSupplyT :: (MonadWriter w m) => MonadWriter w (SupplyT m) where
+    pass (SupplyT stateT) = SupplyT $ pass stateT
+    listen (SupplyT stateT) = SupplyT $ listen stateT
+    writer = SupplyT <<< lift <<< writer
+
+instance monadReaderSupplyT :: (MonadReader r m) => MonadReader r (SupplyT m) where
+    ask = SupplyT ask
+    local f (SupplyT stateT) = SupplyT $ local f stateT
+
+instance monadSupplySupplyT :: (Monad m) => MonadSupply (SupplyT m) where
+    fresh = SupplyT $ do
+        n <- get
+        put (n + 1)
+        return n
 
 runSupplyT :: forall m a . Int -> SupplyT m a -> m (Tuple a Int)
 runSupplyT n = flip runStateT n <<< unSupplyT
