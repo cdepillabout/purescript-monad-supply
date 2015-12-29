@@ -29,4 +29,10 @@ $ pulp test
 
 ### Usage
 
-TODO
+```purescript
+let res = evalSupply 0 $ do
+            a <- fresh
+            b <- fresh
+            pure $ Tuple a b
+-- res is now (Tuple 0 1)
+```
