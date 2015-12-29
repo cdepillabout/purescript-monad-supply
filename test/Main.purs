@@ -14,7 +14,7 @@ import Control.Monad.Supply (evalSupply, fresh)
 
 main :: forall eff . Eff (process :: Process, console :: CONSOLE | eff) Unit
 main = run [consoleReporter] $
-    describe "Control.Monad.Logger" $
+    describe "Control.Monad.Supply" $
         it "fresh works" $ do
             let res = evalSupply 0 $ do
                         a <- fresh
